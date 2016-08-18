@@ -416,7 +416,6 @@ namespace DD4T.ContentModel
             set;
         }
 
-        [XmlIgnore]
         public List<Keyword> Keywords
         {
             get
@@ -435,7 +434,6 @@ namespace DD4T.ContentModel
             set;
         }
 
-        [XmlIgnore]
         IList<IKeyword> IField.Keywords
         {
             get
@@ -443,7 +441,7 @@ namespace DD4T.ContentModel
                 return (KeywordValues == null) ? null : KeywordValues.ToList<IKeyword>();
             }
         }
-        [XmlIgnore]
+
         IList<IKeyword> IField.KeywordValues
         {
             get
