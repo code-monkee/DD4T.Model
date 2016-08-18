@@ -9,18 +9,19 @@ using System.Xml.Serialization;
 using Microsoft.Xml.Serialization.GeneratedAssembly;
 using System.Text.RegularExpressions;
 using DD4T.ContentModel.Contracts.Serializing;
+using System.Collections.Concurrent;
 
 namespace DD4T.Serialization
 {
     public class XmlSerializerService : BaseSerializerService
     {
-        private static Dictionary<Type, XmlSerializer> _xmlSerializers = new Dictionary<Type, XmlSerializer>();
+        private static ConcurrentDictionary<Type, XmlSerializer> _xmlSerializers = new ConcurrentDictionary<Type, XmlSerializer>();
         private XmlSerializer GetXmlSerializer<T>() where T: XmlSerializer
         {
             if (! _xmlSerializers.ContainsKey(typeof(T)))
             {
                 XmlSerializer serializer = (T)Activator.CreateInstance(typeof(T));
-                _xmlSerializers.Add(typeof(T), serializer);
+                _xmlSerializers.AddOrUpdate(typeof(T), serializer, (key, oldvalue) => serializer);
             }
             return _xmlSerializers[typeof(T)];
         }
